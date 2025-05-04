@@ -11,10 +11,9 @@ import SwiftUI
 @Observable
 class DiscoveryViewModel: NSObject {
     var isBluetoothEnabled: Bool = false
-    var discoverablePeripherals: [CBPeripheral] = []
+    var peripheralArray: [CBPeripheral] = []
 
     private var centralManager: CBCentralManager!
-    private var peripheralArray: [CBPeripheral] = []
     private var rssiArray = [NSNumber]()
     private var timer = Timer()
     private var bluefruitPeripheral: CBPeripheral!
@@ -39,6 +38,10 @@ class DiscoveryViewModel: NSObject {
         centralManager?.stopScan()
     }
 
+    func fetchRSSI(for peripheral: CBPeripheral) -> String? {
+        guard let index = peripheralArray.firstIndex(of: peripheral) else { return nil }
+        return rssiArray[index].stringValue
+    }
 }
 
 extension DiscoveryViewModel: CBCentralManagerDelegate {
